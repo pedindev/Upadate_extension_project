@@ -2,9 +2,9 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 
-// Componente para carregar seu modelo GLB
-function TortaModel() {
-  const { scene } = useGLTF('/torta_doce.glb');
+// Componente para carregar modelo GLB dinâmico
+function DynamicModel({ modelPath }) {
+  const { scene } = useGLTF(modelPath);
   
   // Escala muito maior para zoom próximo
   const scale = 8;
@@ -22,7 +22,7 @@ function TortaModel() {
 }
 
 // Componente principal do visualizador
-function ModelViewer() {
+function ModelViewer({ selectedModel }) {
   return (
     <div style={{ width: '100%', height: '500px', position: 'relative' }}>
       <Canvas
@@ -33,7 +33,7 @@ function ModelViewer() {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} />
-          <TortaModel />
+          <DynamicModel modelPath={selectedModel} />
           <OrbitControls 
             enablePan={true}
             enableZoom={true}
