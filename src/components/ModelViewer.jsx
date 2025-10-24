@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 
 // Componente para carregar modelo GLB dinâmico
 function DynamicModel({ modelPath }) {
@@ -33,13 +33,12 @@ function ModelViewer({ selectedModel }) {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} />
-          <DynamicModel key={selectedModel} modelPath={selectedModel} />
+          <DynamicModel modelPath={selectedModel} />
           <OrbitControls 
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
           />
-          <Environment preset="sunset" />
         </Suspense>
       </Canvas>
     </div>
