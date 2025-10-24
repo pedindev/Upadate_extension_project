@@ -10,6 +10,12 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalModel, setModalModel] = useState(null);
   const [modalProductName, setModalProductName] = useState('');
+  const [ratings, setRatings] = useState({
+    bolo_cenoura: 4.5,
+    torta_doce: 4.8,
+    prato_cuscuz: 4.2,
+    bomba: 4.0
+  });
 
   // Dados dos produtos com informações completas
   const products = [
@@ -89,55 +95,24 @@ function App() {
 
   return (
     <div className="app">
-      {/* Header */}
-      <header className="app-header">
-        <div className="header-content">
-          <button className="menu-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-            </svg>
-          </button>
-          <button className="search-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </button>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <div className="hero-section">
         <div className="hero-image">
-          <ModelViewer key="hero-viewer" selectedModel={selectedModel} />
+          <div className="store-image-placeholder">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <p>Imagem da Loja</p>
+          </div>
         </div>
       </div>
 
       {/* Restaurant Info */}
       <div className="restaurant-info">
         <div className="logo-placeholder">
-          <div className="logo-circle">🍰</div>
+          <div className="logo-circle">🍔</div>
         </div>
-        <h1 className="restaurant-name">3DINE</h1>
-        <div className="status-badge closed">
-          <span>Fechado</span>
-        </div>
-        <div className="restaurant-details">
-          <span className="detail-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-            </svg>
-            40-143min
-          </span>
-          <span className="separator">•</span>
-          <span className="detail-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
-            </svg>
-            Mínimo R$ 10,00
-          </span>
-          <span className="separator">•</span>
-          <span className="detail-link">Ver mais</span>
-        </div>
+        <h1 className="restaurant-name">O HERÓI HAMBURGUERES</h1>
       </div>
 
       {/* Category Menu */}
@@ -186,9 +161,51 @@ function App() {
               <div className="product-info">
                 <h3 className="product-name">{product.nameDisplay}</h3>
                 <p className="product-description">{product.description}</p>
+                <div className="product-rating">
+                  <div className="stars">
+                    {[1, 2, 3, 4, 5].map((star) => {
+                      const rating = ratings[product.id];
+                      const fillPercentage = Math.max(0, Math.min(100, ((rating - (star - 1)) / 1) * 100));
+                      
+                      return (
+                        <div key={star} className="star-container">
+                          <svg 
+                            width="16" 
+                            height="16" 
+                            viewBox="0 0 24 24" 
+                            fill="#ddd"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                          <svg 
+                            className="star-fill"
+                            width="16" 
+                            height="16" 
+                            viewBox="0 0 24 24" 
+                            fill="#FFD700"
+                            style={{ clipPath: `inset(0 ${100 - fillPercentage}% 0 0)` }}
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <button 
+                    className="rate-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      alert('Funcionalidade de avaliação em desenvolvimento!');
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    Avaliar
+                  </button>
+                </div>
                 <div className="product-footer">
                   <span className="product-price">R$ {product.price.toFixed(2)}</span>
-                  <button className="add-btn">+</button>
                 </div>
               </div>
             </div>
