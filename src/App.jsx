@@ -25,7 +25,7 @@ function App() {
       
       <main className="app-main">
         <div className="viewer-section">
-          <ModelViewer selectedModel={selectedModel} />
+          <ModelViewer key="model-viewer" selectedModel={selectedModel} />
         </div>
         
         <ModelSelector 

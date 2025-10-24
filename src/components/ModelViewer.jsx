@@ -1,10 +1,15 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 
 // Componente para carregar modelo GLB dinâmico
-function DynamicModel({ modelPath }) {
-  const { scene } = useGLTF(modelPath);
+function DynamicModel({ modelPath, visible }) {
+  const gltf = useGLTF(modelPath);
+  
+  // Clonar a cena para evitar problemas de referência compartilhada
+  const clonedScene = useMemo(() => {
+    return gltf.scene.clone();
+  }, [gltf.scene]);
   
   // Escala muito maior para zoom próximo
   const scale = 8;
@@ -14,9 +19,10 @@ function DynamicModel({ modelPath }) {
   
   return (
     <primitive 
-      object={scene} 
+      object={clonedScene} 
       scale={scale} 
       position={position}
+      visible={visible}
     />
   );
 }
@@ -33,7 +39,10 @@ function ModelViewer({ selectedModel }) {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} />
-          <DynamicModel modelPath={selectedModel} />
+          <DynamicModel modelPath="/bolo_cenoura.glb" visible={selectedModel === '/bolo_cenoura.glb'} />
+          <DynamicModel modelPath="/bomba.glb" visible={selectedModel === '/bomba.glb'} />
+          <DynamicModel modelPath="/prato_cuscuz.glb" visible={selectedModel === '/prato_cuscuz.glb'} />
+          <DynamicModel modelPath="/torta_doce.glb" visible={selectedModel === '/torta_doce.glb'} />
           <OrbitControls 
             enablePan={true}
             enableZoom={true}
